@@ -44,11 +44,25 @@ $data = $result->fetch_assoc();
             position: relative;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
         }
-        .header { text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 1rem; margin-bottom: 2rem; }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+            width: 380px;
+        }
+        .watermark img {
+            width: 100%;
+            height: auto;
+        }
+        .header { text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 1rem; margin-bottom: 2rem; position: relative; z-index: 1; }
         .header h1 { margin: 0; color: #2c3e50; }
-        .cert-no { position: absolute; top: 20px; right: 20px; font-weight: bold; }
-        .content { font-size: 1.2rem; line-height: 2; text-align: center; }
-        .seal { margin-top: 3rem; text-align: right; }
+        .cert-no { position: absolute; top: 20px; right: 20px; font-weight: bold; position: relative; z-index: 1; }
+        .content { font-size: 1.2rem; line-height: 2; text-align: center; position: relative; z-index: 1; }
+        .seal { margin-top: 3rem; text-align: right; position: relative; z-index: 1; }
         .signature-text {
             font-family: 'Great Vibes', cursive;
             font-size: 2.2rem;
@@ -118,6 +132,10 @@ $data = $result->fetch_assoc();
     </div>
 
     <div class="certificate">
+        <!-- Centered Zambian Coat of Arms watermark -->
+        <div class="watermark">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Coat_of_arms_of_Zambia.svg/450px-Coat_of_arms_of_Zambia.svg.png" alt="Zambia Coat of Arms">
+        </div>
         <div class="cert-no">No: <?php echo $data['certificate_number']; ?></div>
         <div class="header">
             <h1>Republic of Civil Registration</h1>

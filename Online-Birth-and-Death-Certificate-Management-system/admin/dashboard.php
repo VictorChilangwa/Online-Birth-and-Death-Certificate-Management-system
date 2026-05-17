@@ -227,6 +227,7 @@ $pending_deaths_count = $conn->query("SELECT count(*) as count FROM death_applic
                 <li><a href="../index.php"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="dashboard.php" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
                 <li><a href="create_worker.php"><i class="fas fa-user-plus"></i> Create Worker</a></li>
+                <li><a href="reports.php"><i class="fas fa-file-invoice"></i> Reports</a></li>
                 <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </aside>

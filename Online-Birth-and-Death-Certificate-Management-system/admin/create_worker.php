@@ -141,6 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <li><a href="../index.php"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="dashboard.php"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
                 <li><a href="create_worker.php" class="active"><i class="fas fa-user-plus"></i> Create Worker</a></li>
+                <li><a href="reports.php"><i class="fas fa-file-invoice"></i> Reports</a></li>
                 <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </aside>

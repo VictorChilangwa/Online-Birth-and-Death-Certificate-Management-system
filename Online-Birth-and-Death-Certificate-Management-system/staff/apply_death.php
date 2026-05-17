@@ -58,102 +58,191 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Death - <?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        .sidebar-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: #bdc3c7;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 1.5rem 0;
+            flex-grow: 1;
+        }
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.5rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active {
+            background: rgba(255,255,255,0.05);
+            color: #3498db;
+            border-left-color: #3498db;
+        }
+        .sidebar-menu li a i {
+            width: 20px;
+            font-size: 1.1rem;
+        }
+        .main-content {
+            flex-grow: 1;
+            margin-left: 260px;
+            padding: 2rem 3rem;
+            background: #f4f7f6;
+            min-height: 100vh;
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <a href="../index.php" class="logo"><?php echo SITE_NAME; ?></a>
-        <ul>
-            <li><a href="dashboard.php">Back to Dashboard</a></li>
-        </ul>
-    </nav>
 
-    <div class="form-container" style="max-width: 800px; margin-top: 2rem;">
-        <h2>Register New Death Event</h2>
-        <?php if($error): ?>
-            <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;"><?php echo $error; ?></div>
-        <?php endif; ?>
-        <?php if($success): ?>
-            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;"><?php echo $success; ?></div>
-        <?php endif; ?>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3><?php echo SITE_NAME; ?></h3>
+                <p>Hospital Staff</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="../index.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="dashboard.php"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                <li><a href="apply_birth.php"><i class="fas fa-baby"></i> Register Birth</a></li>
+                <li><a href="apply_death.php" class="active"><i class="fas fa-book-dead"></i> Register Death</a></li>
+                <li><a href="reports.php"><i class="fas fa-file-invoice"></i> Reports</a></li>
+                <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
 
-        <form method="POST" enctype="multipart/form-data">
-            <h3 style="margin-bottom: 1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">Subject Information</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                    <label>Deceased's Full Name</label>
-                    <input type="text" name="deceased_fullname" required>
-                </div>
-                <div class="form-group">
-                    <label>Gender</label>
-                    <select name="gender" required>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Date of Death</label>
-                    <input type="date" name="dod" required>
-                </div>
-                <div class="form-group">
-                    <label>Place of Death</label>
-                    <input type="text" name="place" placeholder="Hospital or City" required>
-                </div>
-                <div class="form-group">
-                    <label>Cause of Death</label>
-                    <input type="text" name="cause" required>
-                </div>
-                <div class="form-group">
-                    <label>Age at Death</label>
-                    <input type="number" name="age" required min="0">
-                </div>
-            </div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container" style="max-width: 800px; margin: 0; padding: 2.5rem;">
+                <h2>Register New Death Event</h2>
+                
+                <?php if($error): ?>
+                    <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin-bottom: 1.5rem; font-weight: 600;"><?php echo $error; ?></div>
+                <?php endif; ?>
+                <?php if($success): ?>
+                    <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1.5rem; font-weight: 600;"><?php echo $success; ?></div>
+                <?php endif; ?>
 
-            <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">Third-Party Details (Registrant)</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" name="tp_name" required>
-                </div>
-                <div class="form-group">
-                    <label>National ID Number</label>
-                    <input type="text" name="tp_nid" required>
-                </div>
-                <div class="form-group">
-                    <label>Relationship</label>
-                    <select name="tp_rel" required>
-                        <option value="Next of Kin">Next of Kin</option>
-                        <option value="Relative">Relative</option>
-                        <option value="Legal Representative">Legal Representative</option>
-                        <option value="Hospital Official">Hospital Official</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Contact Number</label>
-                    <input type="text" name="tp_contact" required>
-                </div>
-            </div>
+                <form method="POST" enctype="multipart/form-data">
+                    <h3 style="margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; color: #2c3e50;"><i class="fas fa-info-circle"></i> Subject Information</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Deceased's Full Name</label>
+                            <input type="text" name="deceased_fullname" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select name="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Death</label>
+                            <input type="date" name="dod" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Place of Death</label>
+                            <input type="text" name="place" placeholder="Hospital or City" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Cause of Death</label>
+                            <input type="text" name="cause" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Age at Death</label>
+                            <input type="number" name="age" required min="0">
+                        </div>
+                    </div>
 
-            <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">Payment & Documents</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                    <label>Application Fee</label>
-                    <input type="text" value="K45" readonly style="background-color: #eee;">
-                </div>
-                <div class="form-group">
-                    <label>Payment Status</label>
-                    <select name="payment_status" required>
-                        <option value="paid">Paid</option>
-                        <option value="pending">Pending</option>
-                    </select>
-                </div>
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; color: #2c3e50;"><i class="fas fa-user-friends"></i> Third-Party Details (Registrant)</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="tp_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>National ID Number</label>
+                            <input type="text" name="tp_nid" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Relationship</label>
+                            <select name="tp_rel" required>
+                                <option value="Next of Kin">Next of Kin</option>
+                                <option value="Relative">Relative</option>
+                                <option value="Legal Representative">Legal Representative</option>
+                                <option value="Hospital Official">Hospital Official</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            <input type="text" name="tp_contact" required>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; color: #2c3e50;"><i class="fas fa-credit-card"></i> Payment & Documents</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Application Fee</label>
+                            <input type="text" value="K45" readonly style="background-color: #eee;">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Status</label>
+                            <select name="payment_status" required>
+                                <option value="paid">Paid</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Supporting Document (Proof of death, e.g., Doctor's Report)</label>
+                        <input type="file" name="supporting_doc" required style="border: 1px dashed #ccc; padding: 1.5rem; background: #fafafa; text-align: center; cursor: pointer;">
+                    </div>
+                    <button type="submit" class="btn" style="margin-top: 1.5rem;"><i class="fas fa-paper-plane"></i> Submit Registration</button>
+                </form>
             </div>
-            <div class="form-group" style="margin-top: 1rem;">
-                <label>Supporting Document (Proof of death, e.g., Doctor's Report)</label>
-                <input type="file" name="supporting_doc" required>
-            </div>
-            <button type="submit" class="btn" style="margin-top: 1rem;">Submit Registration</button>
-        </form>
+        </main>
     </div>
+
 </body>
 </html>
