@@ -10,7 +10,7 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body> 
  
     <nav>
         <a href="index.php" class="logo"><i class="fas fa-file-invoice"></i> <?php echo SITE_NAME; ?></a>
