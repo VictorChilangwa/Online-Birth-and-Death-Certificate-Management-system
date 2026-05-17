@@ -36,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Certificate - <?php echo SITE_NAME; ?></title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .cert-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 2rem; border-top: 5px solid #3498db; }
@@ -94,6 +96,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p><strong>Age at Death:</strong> <?php echo $certificate['age_at_death']; ?></p>
                         <p><strong>Registered By:</strong> <?php echo $certificate['third_party_name']; ?> (<?php echo $certificate['third_party_relation']; ?>)</p>
                     <?php endif; ?>
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                    <a href="view_official_certificate.php?nid=<?php echo urlencode($nid); ?>&code=<?php echo urlencode($certificate['certificate_number']); ?>" class="btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #3498db; text-decoration: none; padding: 0.8rem 1.5rem; font-family: Arial, sans-serif; font-weight: 600;"><i class="fas fa-eye"></i> View Certificate</a>
                 </div>
             </div>
         <?php endif; ?>

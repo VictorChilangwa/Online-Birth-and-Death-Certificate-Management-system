@@ -59,7 +59,7 @@
     </div>
 
     <footer>
-        <p>&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All Rights Reserved.</p>
+        <p>&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All Rights Reserved. | Disigned by Natash Banda</p>
     </footer>
 
 </body>

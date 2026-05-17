@@ -34,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Birth Application - <?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav>
@@ -66,6 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p><strong>Certificate Code:</strong> <?php echo $row['certificate_number']; ?></p>
                 <p><strong>Payment Status:</strong> <?php echo ucfirst($row['payment_status']); ?> (K<?php echo $row['fee_amount']; ?>)</p>
                 <p><strong>Registered By:</strong> <?php echo $row['staff_name']; ?> (<?php echo $row['hospital_name']; ?>)</p>
+                
+                <?php if($row['status'] === 'approved'): ?>
+                    <p style="margin-top: 1rem;">
+                        <a href="../staff/view_certificate.php?type=birth&id=<?php echo $row['id']; ?>" class="btn" style="background:#3498db; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;"><i class="fas fa-certificate"></i> View Official Certificate</a>
+                    </p>
+                <?php endif; ?>
                 
                 <h3 style="margin-top: 1.5rem;">Supporting Documents</h3>
                 <p><a href="../uploads/<?php echo $row['supporting_doc']; ?>" target="_blank" class="btn btn-secondary">View Uploaded Document</a></p>

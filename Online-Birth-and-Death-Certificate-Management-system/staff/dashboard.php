@@ -126,7 +126,7 @@ $deaths = $conn->query("SELECT * FROM death_applications WHERE registered_by=$us
     </div>
 
     <footer>
-        <p>&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All Rights Reserved. | Designer by Natasha Banda</p>
+        <p>&copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All Rights Reserved. | Disigned by Natash Banda</p>
     </footer>
 </body>
 </html>

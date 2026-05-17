@@ -36,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Certificate - <?php echo SITE_NAME; ?></title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .cert-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 2rem; border-top: 5px solid #2ecc71; }
@@ -95,8 +97,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p><strong>Registered By:</strong> <?php echo $certificate['third_party_name']; ?> (<?php echo $certificate['third_party_relation']; ?>)</p>
                     <?php endif; ?>
                 </div>
+                <div style="margin-top: 1.5rem; text-align: center; border-top: 1px solid #eee; padding-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="view_official_certificate.php?nid=<?php echo urlencode($nid); ?>&code=<?php echo urlencode($code); ?>" class="btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #34495e; text-decoration: none; padding: 0.8rem 1.5rem; font-family: Arial, sans-serif; font-weight: 600;"><i class="fas fa-eye"></i> View Certificate</a>
+                    <button onclick="downloadOfficialCertificate('<?php echo addslashes($nid); ?>', '<?php echo addslashes($code); ?>', '<?php echo strtoupper($type); ?>_CERTIFICATE-<?php echo $code; ?>.pdf')" class="btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #27ae60; border: none; cursor: pointer; padding: 0.8rem 1.5rem; font-family: Arial, sans-serif; font-weight: 600; color: white;"><i class="fas fa-download"></i> Download PDF</button>
+                </div>
             </div>
         <?php endif; ?>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+    function downloadOfficialCertificate(nid, code, filename) {
+        const btn = event.currentTarget;
+        const originalContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+        
+        fetch(`view_official_certificate.php?nid=${encodeURIComponent(nid)}&code=${encodeURIComponent(code)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(htmlString => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlString, 'text/html');
+                
+                const certificateEl = doc.querySelector('.certificate');
+                const styleEls = doc.querySelectorAll('style, link');
+                
+                if (!certificateEl) {
+                    throw new Error('Certificate layout not found in public viewer.');
+                }
+                
+                // Style for perfect A4 page fit in background download
+                certificateEl.style.boxShadow = 'none';
+                certificateEl.style.margin = '0';
+                certificateEl.style.padding = '2.5rem';
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.top = '-9999px';
+                tempDiv.style.width = '800px';
+                
+                styleEls.forEach(el => tempDiv.appendChild(el.cloneNode(true)));
+                tempDiv.appendChild(certificateEl);
+                document.body.appendChild(tempDiv);
+                
+                const opt = {
+                    margin:       15,
+                    filename:     filename,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                setTimeout(() => {
+                    html2pdf().set(opt).from(tempDiv).save().then(() => {
+                        document.body.removeChild(tempDiv);
+                        btn.disabled = false;
+                        btn.innerHTML = originalContent;
+                    }).catch(err => {
+                        document.body.removeChild(tempDiv);
+                        btn.disabled = false;
+                        btn.innerHTML = originalContent;
+                        alert('PDF generation failed: ' + err.message);
+                    });
+                }, 500);
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+                alert('Failed to download certificate: ' + err.message);
+            });
+    }
+    </script>
 </body>
 </html>
